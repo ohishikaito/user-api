@@ -15,7 +15,6 @@ type (
 		port string
 		rpc  *grpc.Server
 	}
-	// Server interface
 	Server interface {
 		Serve() error
 	}
@@ -47,7 +46,13 @@ func (s *server) Serve() error {
 }
 
 func (s *server) registerServices() {
-	userQueryService := userqueryservice.NewServer()
+	dataAccessor := userqueryservice.NewDataAccessor()
+	useCase := userqueryservice.NewUseCase(dataAccessor)
+	userQueryService := userqueryservice.NewServer(useCase)
 
 	definition.RegisterUserQueryServiceServer(s.rpc, userQueryService)
 }
+
+// commandサービス
+// UserCommandServiceを作る
+// 単体テストめっちゃ大事

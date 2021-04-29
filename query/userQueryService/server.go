@@ -7,13 +7,14 @@ import (
 )
 
 type server struct {
+	uc UseCase
 }
 
-// func NewServer() *server {
-func NewServer() definition.UserQueryServiceServer {
-	return &server{}
+func NewServer(uc UseCase) definition.UserQueryServiceServer {
+	return &server{uc}
 }
 
 func (s *server) GetByID(ctx context.Context, req *definition.GetByIDRequest) (*definition.GetByIDResponse, error) {
+	s.uc.GetByID()
 	return nil, nil
 }
